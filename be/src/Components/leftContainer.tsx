@@ -5,7 +5,7 @@ import {useNavigate} from "react-router-dom";
 export default function LeftContainer(){
     // @ts-ignore
     const { setCompany } = useCompany();
-    const buttonCompany = [{'id':'AAPL','name':'Apple'}, {'id':'AMZN','name':'Amazon'}, {'id':'WMT','name':'Walmart'}, {'id':'NVDA','name':'Nvidia'}, {'id':'RS','name':'Reliance'}, {'id':'DIS','name':'Disney'}, {'id':'F','name':'Ford'}, {'id':'T','name':'AT&T'}, {'id':'DPZ','name':"Domino's Pizza"}, {'id':'YUM','name':'Yum'}]
+    const buttonCompany = [{'id':'AAPL','name':'Apple'}, {'id':'AMZN','name':'Amazon'}, {'id':'WMT','name':'Walmart'}, {'id':'NVDA','name':'Nvidia'}, {'id':'TSLA','name':'Tesla'}, {'id':'DIS','name':'Disney'}, {'id':'F','name':'Ford'}, {'id':'T','name':'AT&T'}, {'id':'DPZ','name':"Domino's Pizza"}, {'id':'YUM','name':'Yum'}]
     const navigate = useNavigate()
 
 

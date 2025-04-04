@@ -10,7 +10,7 @@ export default function NavBar(){
         <div className="flex px-10 border-b border-gray-200 py-2">
             {/* Left Section */}
             <div className="flex flex-auto justify-between items-center">
-                <Link to="/">
+                <Link to="/model">
                     <img
                         src="https://kite.zerodha.com/static/images/kite-logo.svg"
                         alt="Kite Logo"

@@ -12,12 +12,15 @@ import Loading from "../Components/Loading.tsx";
 import OptionBar from "../Components/OptionBar.tsx";
 import {useInterval} from "../Components/intervalOptions.tsx";
 import {useGraph} from "../Components/graphOptions.tsx";
+import {useIndicator} from "../Components/indicatorOptions.tsx";
 
 
 //@ts-ignore
 export const ChartComponent = props => {
     const {
         data,
+        idata,
+        indicator,
         graph,
         colors: {
             backgroundColor = 'white',
@@ -29,6 +32,7 @@ export const ChartComponent = props => {
     } = props;
 
     const chartContainerRef = useRef();
+    const secondChartRef = useRef()
 
     useEffect(
         () => {
@@ -49,6 +53,7 @@ export const ChartComponent = props => {
                 height: 500,
             });
             chart.timeScale().fitContent();
+
             let newSeries = null
             if (graph?.name == 'Candle' || graph?.name == 'Heikin Ashi') {
                 newSeries = chart.addSeries(CandlestickSeries, {
@@ -117,9 +122,56 @@ export const ChartComponent = props => {
         [data, backgroundColor, lineColor, textColor, areaTopColor, areaBottomColor]
     );
 
-    return (
+    useEffect(() => {
         // @ts-ignore
-        <div ref={chartContainerRef} className=""/>
+        const secondChart = createChart(secondChartRef.current)
+        // @ts-ignore
+        secondChart.applyOptions({
+            layout:{
+                background:{type:ColorType.Solid,color:"white"},
+                textColor:"black"
+            },
+            // @ts-ignore
+            width: secondChartRef.current.clientWidth,
+            height: 200
+        })
+        let secondSeries = null
+
+        if (indicator?.name == 'SMA'){
+            secondSeries = secondChart.addSeries(LineSeries, {color: 'black',lineWidth: 2})
+        }
+
+        if (indicator?.name == 'EMA'){
+            secondSeries = secondChart.addSeries(LineSeries, {color: 'black',lineWidth: 2})
+        }
+
+        if (indicator?.name == 'RSI'){
+            secondSeries = secondChart.addSeries(LineSeries, {color: 'black',lineWidth: 2})
+        }
+
+        if (indicator?.name == 'BB'){
+            secondSeries = secondChart.addSeries(LineSeries, {color: 'green',lineWidth: 2})
+        }
+
+        if (indicator?.name == 'ADL'){
+            secondSeries = secondChart.addSeries(LineSeries, {color: 'blue',lineWidth: 2})
+        }
+
+        console.log(idata)
+        secondSeries?.setData(idata)
+
+        return ()=>{
+            secondChart.remove()
+        }
+
+    }, [idata]);
+
+
+    return (
+        <div>
+            <div ref={chartContainerRef}/>
+            <div ref={secondChartRef}/>
+        </div>
     );
 };
 
@@ -147,7 +199,10 @@ export default function Chart() {
     const { company } = useCompany();
     // @ts-ignore
     const currentGraph = useGraph((state)=>state.graph)
+    // @ts-ignore
+    const currentIndicator = useIndicator((state)=>state.indicator)
     const data = useChartData(company, currentGraph);
+    const idata = useChartData(company, currentIndicator)
 
     return<div className="h-full shadow-md">
         <div className="py-2 border-b-2 border-red-200"><OptionBar/></div>
@@ -155,7 +210,7 @@ export default function Chart() {
             {!company ? (
                 <ChartComponent data={[]}/>
             ) : data.length > 0 ? (
-                <ChartComponent data={data} graph={currentGraph}/>
+                <ChartComponent data={data} idata={idata} graph={currentGraph} indicator={currentIndicator}/>
             ) : (
                 <div className="flex h-3/4 w-full justify-center items-center flex-1">
                     <Loading/>

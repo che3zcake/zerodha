@@ -7,9 +7,11 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cd src && node index.js"
   },
   "dependencies": {
+    "@ixjb94/indicators-js": "^1.0.0",
     "axios": "^1.8.3",
     "cors": "^2.8.5",
     "express": "^4.21.2",
